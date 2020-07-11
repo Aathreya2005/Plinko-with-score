@@ -5,7 +5,7 @@ const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 
 var engine, world;
-var particles=[];
+var particle;
 var divisions=[];
 var plinkos=[];
 var score=0;
@@ -66,30 +66,32 @@ if(turn>=5){
   gameState="end";
 }
 
- for(var j=0;j<particles.length;j++){
-   particles[j].display();
-  if(particles.body.position.y>280){
-    if(particles.body.position.x<=80&&particles.body.position.x>=400){
+if(particle!=null){
+  particle.display();
+  if(particle.body.position.y>320){
+    if(particle.body.position.x<80||particle.body.position.x>400){
       score+=1000;
-      particles.pop();
+     particle= null;
     }
-    else if((particles.body.position.x>80&&particles.body.position.x<=160)&&(particles.body.position.x>=320&&particles.body.position.x<400)){
+    else if((particle.body.position.x>80&&particle.body.position.x<=160)||(particle.body.position.x>=320&&particle.body.position.x<400)){
       score+=500;
-      particles.pop();
+    particle=null;
     }
-    else if(particles.body.position.x>160&&particles.body.position.x<320){
+    else if(particle.body.position.x>160&&particle.body.position.x<320){
       score+=100;
-      particles.pop();
+     particle= null;
     }
-  }
- }
+  }}
+ 
 if(gameState=="end"){
-  text("GAMEOVER",30,200);
+  fill("red");
+  textSize(40);
+  text("GAMEOVER",130,200);
 }
 }
-function mousePressed(){
-  if(gameState!=="end"){
-    turn++;
-    particles=new Particle(mouseX,10,10);
-  }
+function keyPressed(){
+	if(gameState!=="end"&&keyCode==DOWN_ARROW){
+		turn++;
+		particle = new Particle(mouseX,10,10);
+	}
 }
